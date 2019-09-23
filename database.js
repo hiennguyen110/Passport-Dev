@@ -1,10 +1,9 @@
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-
-// Connection URL
 const url = 'mongodb+srv://patsdatabase:52435798H$a@patskahootdbs-irwee.gcp.mongodb.net/test?retryWrites=true&w=majority';
 
-const dbName = 'myproject';
+// Database Name
+const dbName = 'user';
 
 // Create a new MongoClient
 const client = new MongoClient(url, { useNewUrlParser: true });
@@ -16,16 +15,44 @@ client.connect(function(err, client) {
 
   const db = client.db(dbName);
 
-  createCapped(db, function() {
-    client.close();
-  });
+//   createCapped(db, "user_account", function() {
+//     client.close();
+//   });
+    insert_data(db, function(){
+        client.close();
+    })
 });
 
-function createCapped(db, callback) {
-  db.createCollection("myCollection", { "capped": true, "size": 100000, "max": 5000},
+function createCapped(db, collection_name, callback) {
+  db.createCollection(collection_name, { "capped": true, "size": 100000, "max": 5000},
     function(err, results) {
       console.log("Collection created.");
       callback();
     }
   );
 };
+
+function insert_data(db, callback){
+    const collection = db.collection("user_account");
+    collection.insertMany([{
+       userName: "Hien Nguyen",
+       password: "rootAd" 
+    }, 
+    {
+        userName: "Hien",
+        password: "root"
+    }, 
+    {
+        userName: "Hien",
+        password: "root"
+    }
+
+]
+    , function(err, result){
+        assert.equal(err, null);
+        assert.equal(3, result.result.n);
+        assert.equal(3, result.ops.length);
+        console.log("Data inserted !!!");
+         callback();
+    });
+}
