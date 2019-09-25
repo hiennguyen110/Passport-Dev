@@ -40,7 +40,7 @@ const insert_new_user = function(userInfo){
         }
     });
 }
-
+ 
 const find_user = function(userName){
     mongooseConn = connect_to_database(USER_DATABASE);
     const USER_ACCOUNT_SCHEMA = new mongoose.Schema({
@@ -50,24 +50,37 @@ const find_user = function(userName){
         lastName: String
     });
     const USER_ACCOUNT = mongoose.model(USER_COLLECTION, USER_ACCOUNT_SCHEMA);
-    USER_ACCOUNT.find({userName: userName}, function(error, users){
-        if (error){
-            console.log(highlighter.error_highlighter(error));
+
+    USER_ACCOUNT.findOne({userName: userName}, function(err, users){
+        if (err){
+            console.log(highlighter.error_highlighter(err));
             mongoose.connection.close();
             return false;
         } else {
-            if (users){
-                users.forEach(function(user){
-                    console.log(highlighter.success_highlighter("Found user !!!"));
-                    console.log(user._id);
-                })
-            } else {
-                return false;
-            }
-            mongoose.connection.close();
+            var userName = users.userName;
+            return userName;
         }
     });
-    return true;
+
+    
+
+    // USER_ACCOUNT.findOne({userName: userName}, function(error, users){
+    //     if (error){
+    //         console.log(highlighter.error_highlighter(error));
+    //         mongoose.connection.close();
+    //         return false;
+    //     } else {
+    //         if (users){
+    //             users.forEach(function(user){
+    //                 console.log(user.userName);
+    //             })
+    //         } else {
+    //             return false;
+    //         }
+    //         mongoose.connection.close();
+    //     }
+    // });
+    // return true;
 }
 
 const update_user = function(userInfo, userToFind){
@@ -101,25 +114,53 @@ const update_user = function(userInfo, userToFind){
                                 console.log(highlighter.error_highlighter(err));
                             } else {
                                 console.log(highlighter.success_highlighter("Record updated !!!"));
+                                mongoose.connection.close();
                             }
                         }
                         );
                 });
+                
             } else {
                 console.log(highlighter.warning_highlighter("Cannot update record !!!"));
             }
-            mongoose.connection.close();
         }
     });
 }
 
- userInfo = ['NGUYEN DAO THE HIEN', 'AAA', 'AAA', 'AAA'];
+//  userInfo = ['minhhoi1234', 'AAA', 'AAA', 'AAA'];
 // // insert_new_user(userInfo);
-update_user(userInfo, "willNguyen");
+// update_user(userInfo, "hiennguyen123");
 // find_user("willNguyen");
 // find_user("NGUYEN DAO THE HIEN");
 
+// console.log(userName);
 
+const search_username = new Promise((resolve, reject) => {
+    mongooseConn = connect_to_database(USER_DATABASE);
+    const USER_ACCOUNT_SCHEMA = new mongoose.Schema({
+        userName: String,
+        passWord: String,
+        firstName: String,
+        lastName: String
+    });
+    const USER_ACCOUNT = mongoose.model(USER_COLLECTION, USER_ACCOUNT_SCHEMA);
+    USER_ACCOUNT.findOne({userName: "minhhoi1234"}, function(err, users){
+        if (err){
+            mongoose.connection.close();
+            reject("Got some error !!!");
+        } else {
+            resolve(users.userName);
+        }
+    })
+});
+
+search_username.then((result) => {
+    if (result){
+        console.log(result);
+    }  
+}).catch((error) => {
+    console.log(error);
+})
 
 module.exports = {
     insert_new_user: insert_new_user,
