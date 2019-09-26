@@ -77,4 +77,52 @@ const find_user = function(name_of_user) {
 
 // test();
 
+const delete_user = function(name_of_user) {
+    mongooseConn = connect_to_database(USER_DATABASE);
+    const USER_ACCOUNT_SCHEMA = new mongoose.Schema({
+        userName: String,
+        passWord: String,
+        firstName: String,
+        lastName: String
+    });
+    const USER_ACCOUNT = mongoose.model(USER_COLLECTION, USER_ACCOUNT_SCHEMA);
 
+    return USER_ACCOUNT.deleteOne({userName: name_of_user});
+}
+
+// delete_user("hien").then((result) => {
+//     if (result.deletedCount == 0){
+//         console.log("No Record To Delete !!!");
+//     } else {
+//         console.log("Deleted !!!");
+//     }
+// }).catch((err) => {
+//     console.log(err);
+// });
+
+// var userInfo = ["admin", "root", "admin", "admin"];
+// insert_new_user(userInfo);
+
+const update_user = function(name_of_user, userName, passWord, firstName, lastName) {
+    mongooseConn = connect_to_database(USER_DATABASE);
+    const USER_ACCOUNT_SCHEMA = new mongoose.Schema({
+        userName: String,
+        passWord: String,
+        firstName: String,
+        lastName: String
+    });
+    const USER_ACCOUNT = mongoose.model(USER_COLLECTION, USER_ACCOUNT_SCHEMA);
+
+    return USER_ACCOUNT.updateOne(
+        {userName: userName},
+        {passWord: passWord},
+        {firstName: firstName},
+        {lastName: lastName}
+    );
+}
+
+update_user("admin", "HIEN", "HIEN", "HIEN", "HIEN").then((result) => {
+    console.log(result);
+}).catch((err) => {
+    console.log(err);
+});
