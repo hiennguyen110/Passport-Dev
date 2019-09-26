@@ -1,0 +1,22 @@
+// const find_user = async function(name_of_user) {
+//     mongooseConn = connect_to_database(USER_DATABASE);
+//     const USER_ACCOUNT_SCHEMA = new mongoose.Schema({
+//         userName: String,
+//         passWord: String,
+//         firstName: String,
+//         lastName: String
+//     });
+//     const USER_ACCOUNT = mongoose.model(USER_COLLECTION, USER_ACCOUNT_SCHEMA);
+
+//     return await USER_ACCOUNT.findOne({userName: name_of_user});    
+// }
+// async function test(){
+// try {
+//     await find_user("minhhoi1234");
+// } catch (error) {
+//     console.log(error);
+//     console.log()
+// }
+// }
+
+// test();

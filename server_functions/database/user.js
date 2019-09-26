@@ -54,29 +54,6 @@ const find_user = function(name_of_user) {
     return USER_ACCOUNT.findOne({userName: name_of_user});    
 }
 
-// const find_user = async function(name_of_user) {
-//     mongooseConn = connect_to_database(USER_DATABASE);
-//     const USER_ACCOUNT_SCHEMA = new mongoose.Schema({
-//         userName: String,
-//         passWord: String,
-//         firstName: String,
-//         lastName: String
-//     });
-//     const USER_ACCOUNT = mongoose.model(USER_COLLECTION, USER_ACCOUNT_SCHEMA);
-
-//     return await USER_ACCOUNT.findOne({userName: name_of_user});    
-// }
-// async function test(){
-// try {
-//     await find_user("minhhoi1234");
-// } catch (error) {
-//     console.log(error);
-//     console.log()
-// }
-// }
-
-// test();
-
 const delete_user = function(name_of_user) {
     mongooseConn = connect_to_database(USER_DATABASE);
     const USER_ACCOUNT_SCHEMA = new mongoose.Schema({
@@ -90,19 +67,6 @@ const delete_user = function(name_of_user) {
     return USER_ACCOUNT.deleteOne({userName: name_of_user});
 }
 
-// delete_user("hien").then((result) => {
-//     if (result.deletedCount == 0){
-//         console.log("No Record To Delete !!!");
-//     } else {
-//         console.log("Deleted !!!");
-//     }
-// }).catch((err) => {
-//     console.log(err);
-// });
-
-// var userInfo = ["admin", "root", "admin", "admin"];
-// insert_new_user(userInfo);
-
 const update_user = function(name_of_user, userName, passWord, firstName, lastName) {
     mongooseConn = connect_to_database(USER_DATABASE);
     const USER_ACCOUNT_SCHEMA = new mongoose.Schema({
@@ -113,16 +77,17 @@ const update_user = function(name_of_user, userName, passWord, firstName, lastNa
     });
     const USER_ACCOUNT = mongoose.model(USER_COLLECTION, USER_ACCOUNT_SCHEMA);
 
-    return USER_ACCOUNT.updateOne(
-        {userName: userName},
-        {passWord: passWord},
-        {firstName: firstName},
-        {lastName: lastName}
-    );
+    return USER_ACCOUNT.updateOne({userName: name_of_user}, {
+        userName: userName, 
+        passWord: passWord, 
+        firstName: firstName, 
+        lastName: lastName
+    })
 }
 
-update_user("admin", "HIEN", "HIEN", "HIEN", "HIEN").then((result) => {
-    console.log(result);
-}).catch((err) => {
-    console.log(err);
-});
+module.exports = {
+    insert_new_user: insert_new_user,
+    find_user: find_user,
+    delete_user: delete_user,
+    update_user: update_user
+}
