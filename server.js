@@ -20,11 +20,11 @@ server.use(bodyParser.urlencoded({extended: true}));
 server.use(express.static("public"));
 
 server.get("/", function(req, res){
-    // res.redirect("/login");
+    res.redirect("/register");
 });
 
 server.post("/", function(req, res){
-
+    res.redirect("/register");
 });
 
 server.get("/login", function(req, res){

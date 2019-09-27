@@ -1,5 +1,5 @@
 const sgEmail = require("@sendgrid/mail");
-const sendGridAPIKey = "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";
+const sendGridAPIKey = "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";
 sgEmail.setApiKey(sendGridAPIKey);
 
 const send_verication_email = function(userEmail, userName, verificationCode) {
