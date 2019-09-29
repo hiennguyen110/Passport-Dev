@@ -2,35 +2,29 @@ const mongoose = require("mongoose");
 const highlighter = require("../highlighter/highlight.js");
 const USER_DATABASE = "USER";
 const USER_COLLECTION = "USERACCOUNT";
-const encrypt = require("mongoose-encryption");
 
-mongoose.connect("mongodb+srv://patsdatabase:52435798H$a@patskahootdbs-irwee.gcp.mongodb.net/" + USER_DATABASE + "?retryWrites=true&w=majority", { useNewUrlParser: true });
+mongoose.connect("mongodb+srv://patsdatabase:52435798H$a@patskahootdbs-irwee.gcp.mongodb.net/" + USER_DATABASE + "?retryWrites=true&w=majority", { useNewUrlParser: true , useUnifiedTopology: true});
 const USER_ACCOUNT_SCHEMA = new mongoose.Schema({
     userName: String,
-    passWord: String,
     firstName: String,
     lastName: String
 });
 
-const secret = "passdaivailoz";
-USER_ACCOUNT_SCHEMA.plugin(encrypt, {secret: secret, encryptedFields: ["passWord"] });
 
 const USER_ACCOUNT = mongoose.model(USER_COLLECTION, USER_ACCOUNT_SCHEMA);
 
 const connect_to_database = function(databaseName){
-    return mongoose.connect("mongodb+srv://patsdatabase:52435798H$a@patskahootdbs-irwee.gcp.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", { useNewUrlParser: true });    
+    return mongoose.connect("mongodb+srv://patsdatabase:52435798H$a@patskahootdbs-irwee.gcp.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });    
 }
 
 const insert_new_user = function(userInfo){
     // mongooseConn = connect_to_database(USER_DATABASE);
     userName = userInfo[0];
-    passWord = userInfo[1];
-    firstName = userInfo[2];
-    lastName = userInfo[3];
+    firstName = userInfo[1];
+    lastName = userInfo[2];
 
     const new_user = new USER_ACCOUNT({
         userName: userName,
-        passWord: passWord,
         firstName: firstName,
         lastName: lastName
     });
@@ -62,10 +56,9 @@ const delete_user = function(name_of_user) {
     return USER_ACCOUNT.deleteOne({userName: name_of_user});
 }
 
-const update_user = function(name_of_user, userName, passWord, firstName, lastName) {
+const update_user = function(name_of_user, userName, firstName, lastName) {
     return USER_ACCOUNT.updateOne({userName: name_of_user}, {
         userName: userName, 
-        passWord: passWord, 
         firstName: firstName, 
         lastName: lastName
     })
